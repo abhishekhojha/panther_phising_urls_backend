@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { predictUrl } = require("../controllers/predictController");
+const { predictUrl, saveHistory } = require("../controllers/predictController");
 
 // Protected prediction route
 router.post("/predict", predictUrl);
