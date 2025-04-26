@@ -43,5 +43,14 @@ const saveHistory = async (req, res) => {
       .json({ error: "Failed to save history", details: err.message });
   }
 };
-
-module.exports = { predictUrl, saveHistory };
+const getAllHistory = async (req, res) => {
+  try {
+    const history = await History.find();
+    res.status(200).json(history);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch phishing history", details: err });
+  }
+};
+module.exports = { predictUrl, saveHistory, getAllHistory };
