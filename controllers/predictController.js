@@ -28,15 +28,34 @@ const saveHistory = async (req, res) => {
   }
 
   try {
-    const newEntry = new History({
+    // Build match condition
+    const matchCondition = {
       url,
-      result,
-      userId,
-      deviceId,
-    });
+      $or: [{ userId: userId || null }, { deviceId: deviceId || null }],
+    };
 
-    await newEntry.save();
-    return res.status(201).json({ message: "History saved successfully" });
+    const existingEntry = await History.findOne(matchCondition);
+
+    if (existingEntry) {
+      // Update the existing record
+      existingEntry.result = result;
+      if (userId) existingEntry.userId = userId;
+      if (deviceId) existingEntry.deviceId = deviceId;
+
+      await existingEntry.save();
+      return res.status(200).json({ message: "History updated successfully" });
+    } else {
+      // Create a new record
+      const newEntry = new History({
+        url,
+        result,
+        userId,
+        deviceId,
+      });
+
+      await newEntry.save();
+      return res.status(201).json({ message: "History saved successfully" });
+    }
   } catch (err) {
     return res
       .status(500)

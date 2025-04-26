@@ -4,6 +4,8 @@ const passport = require("passport");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
+const markRoutes = require("./routes/markRoutes");
+
 // Load env variables
 dotenv.config();
 
@@ -31,6 +33,7 @@ app.use(passport.session());
 // Routes
 app.use("/", authRoutes);
 app.use("/api", predictRoutes);
+app.use("/api", markRoutes);
 
 // Health Check
 app.get("/", (req, res) => {
