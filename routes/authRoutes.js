@@ -12,20 +12,21 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login",
-    successRedirect: "/protected",
+    successRedirect: "http://localhost:5173",
   })
 );
 
 // Protected test route
 router.get("/protected", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json({
-      message: "✅ You are logged in",
-      user: req.user,
-    });
-  } else {
-    res.status(401).json({ error: "Unauthorized" });
-  }
+    // go to the frontend url 
+    if (req.isAuthenticated()) {
+      res.json({
+        message: "✅ You are logged in",
+        user: req.user,
+      });
+    } else {
+      res.status(401).json({ error: "Unauthorized" });
+    }
 });
 
 // Logout
