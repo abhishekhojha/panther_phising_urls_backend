@@ -1,4 +1,5 @@
 const axios = require("axios");
+const History = require("../models/History");
 
 const predictUrl = async (req, res) => {
   const { url } = req.body;
@@ -15,5 +16,32 @@ const predictUrl = async (req, res) => {
     res.status(500).json({ error: "Prediction service unavailable" });
   }
 };
+const saveHistory = async (req, res) => {
+  const { url, result, userId, deviceId } = req.body;
 
-module.exports = { predictUrl };
+  if (!url || !result) {
+    return res.status(400).json({ error: "URL and result are required" });
+  }
+
+  if (!userId && !deviceId) {
+    return res.status(400).json({ error: "User ID or Device ID is required" });
+  }
+
+  try {
+    const newEntry = new History({
+      url,
+      result,
+      userId,
+      deviceId,
+    });
+
+    await newEntry.save();
+    return res.status(201).json({ message: "History saved successfully" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: "Failed to save history", details: err.message });
+  }
+};
+
+module.exports = { predictUrl, saveHistory };

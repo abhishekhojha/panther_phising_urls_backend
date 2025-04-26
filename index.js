@@ -3,12 +3,13 @@ const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
 const dotenv = require("dotenv");
-
+const connectDB = require("./config/db");
 // Load env variables
 dotenv.config();
 
 // Passport config
 require("./auth/passport");
+connectDB();
 
 const authRoutes = require("./routes/authRoutes");
 const predictRoutes = require("./routes/predictRoutes");
