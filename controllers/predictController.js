@@ -53,4 +53,25 @@ const getAllHistory = async (req, res) => {
       .json({ error: "Failed to fetch phishing history", details: err });
   }
 };
-module.exports = { predictUrl, saveHistory, getAllHistory };
+const getHistoryByDevice = async (req, res) => {
+  const { deviceId } = req.params; // Get deviceId from the URL
+
+  try {
+    // Find phishing history for a specific device
+    const history = await History.find({ deviceId });
+
+    if (history.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No history found for this device" });
+    }
+
+    // Send the response with the device-specific history
+    res.status(200).json(history);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch history for this device", details: err });
+  }
+};
+module.exports = { predictUrl, saveHistory, getAllHistory, getHistoryByDevice };
