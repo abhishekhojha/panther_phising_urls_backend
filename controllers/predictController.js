@@ -1,5 +1,6 @@
 const axios = require("axios");
 const History = require("../models/History");
+const UserModel = require("../models/User");
 
 const predictUrl = async (req, res) => {
   const { url } = req.body;
@@ -93,4 +94,20 @@ const getHistoryByDevice = async (req, res) => {
       .json({ error: "Failed to fetch history for this device", details: err });
   }
 };
-module.exports = { predictUrl, saveHistory, getAllHistory, getHistoryByDevice };
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch users", details: err });
+  }
+};
+
+module.exports = {
+  predictUrl,
+  saveHistory,
+  getAllHistory,
+  getHistoryByDevice,
+  getAllUsers,
+};

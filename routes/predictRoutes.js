@@ -5,6 +5,7 @@ const {
   saveHistory,
   getAllHistory,
   getHistoryByDevice,
+  getAllUsers,
 } = require("../controllers/predictController");
 const History = require("../models/History");
 
@@ -13,6 +14,7 @@ router.post("/predict", predictUrl);
 router.post("/save-history", saveHistory);
 router.get("/history", getAllHistory);
 router.get("/history/:deviceId", getHistoryByDevice);
+router.get("/users", getAllUsers);
 // router.get("/delete-console-urls", async (req, res) => {
 //   try {
 //     // Delete all URLs starting with 'https://console.cloud.google.com'
